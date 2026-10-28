@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Хочу тебе кое-что сказать 💌</title>
+<style>
+:root{--a:#ff4d8d;--b:#ff8fb8;--ink:#5a1a3a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:"Quicksand","Nunito","Segoe UI",system-ui,sans-serif;color:var(--ink);overflow:hidden;
+background:linear-gradient(135deg,#ffd1e3,#ffb3d1 40%,#e8a7ff 100%);background-size:200% 200%;animation:bg 12s ease infinite}
+@keyframes bg{50%{background-position:100% 100%}}
+#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.h{position:absolute;bottom:-60px;animation:fly linear forwards;opacity:.8;user-select:none}
+@keyframes fly{to{transform:translate(var(--dx),-115vh) rotate(var(--r));opacity:0}}
+main{position:relative;z-index:2;height:100%;display:flex;align-items:center;justify-content:center;padding:16px}
+.card{width:min(92vw,460px);text-align:center;padding:34px 26px 30px;border-radius:32px;
+background:rgba(255,255,255,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+border:1.5px solid rgba(255,255,255,.8);box-shadow:0 20px 60px rgba(255,77,141,.35);animation:pop .8s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.bear{font-size:76px;line-height:1;display:inline-block;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(4deg)}}
+h1{font-size:clamp(24px,6.5vw,32px);margin:14px 0 6px;line-height:1.2}
+p{margin:0 0 22px;font-size:17px;opacity:.85;min-height:46px}
+.btns{display:flex;gap:14px;justify-content:center;align-items:center;min-height:70px;flex-wrap:wrap}
+button{font:inherit;font-weight:700;border:0;border-radius:999px;cursor:pointer;padding:14px 30px;font-size:18px;transition:transform .15s}
+#yes{background:linear-gradient(135deg,var(--a),#ff2d6f);color:#fff;box-shadow:0 8px 22px rgba(255,45,111,.5);animation:beat 1.4s infinite}
+@keyframes beat{50%{filter:brightness(1.08)}}
+#yes:hover{transform:scale(1.06)}
+#no{background:#fff;color:var(--ink);box-shadow:0 6px 16px rgba(0,0,0,.12);transition:left .25s,top .25s,transform .15s}
+.final{display:none}
+.card.done .ask{display:none}.card.done .final{display:block}
+.final .big{font-size:30px;font-weight:700;margin:14px 0 8px}
+.final span{font-size:17px;opacity:.85}
+.reason{margin:20px 0 16px;padding:16px 18px;border-radius:20px;background:rgba(255,255,255,.7);min-height:74px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;line-height:1.35;box-shadow:inset 0 0 0 1.5px rgba(255,77,141,.25)}
+#more{background:linear-gradient(135deg,var(--a),#ff2d6f);color:#fff;box-shadow:0 8px 22px rgba(255,45,111,.45)}
+#more:active{transform:scale(.95)}
+.card .menu,.final #reason,.final #more{display:none}
+#open{margin-top:20px;background:linear-gradient(135deg,var(--a),#ff2d6f);color:#fff;box-shadow:0 8px 22px rgba(255,45,111,.5);animation:beat 1.4s infinite}
+.hm{display:block;background:none;box-shadow:none;color:var(--a);padding:0 2px 8px;font-size:15px}
+main.done{flex-direction:column;justify-content:flex-start;overflow:auto;gap:22px;padding:24px 16px 48px}
+main.done .card{max-height:none;overflow:visible;flex:none}
+.nb{position:relative;flex:none;width:min(92vw,460px);background:#fffdf5;border-radius:18px;padding:38px 16px 18px;box-shadow:0 18px 50px rgba(255,77,141,.35);animation:rise .7s cubic-bezier(.2,1.1,.4,1) backwards}
+.nb::before{content:'';position:absolute;top:-8px;left:14px;right:14px;height:24px;background:radial-gradient(circle at 12px 12px,#ff4d8d 0 4px,#fff 4px 7px,transparent 7.5px) repeat-x;background-size:24px 24px}
+.nb[hidden],.nb [hidden]{display:none!important}
+@keyframes rise{from{opacity:0;transform:translateY(60px) rotate(2deg)}}
+.nt{font-size:20px;font-weight:700;text-align:center;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.sh{position:relative;background:var(--c);color:var(--ink);border-radius:6px 6px 12px 12px;border-top:7px dotted rgba(0,0,0,.18);padding:12px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:14px;box-shadow:0 6px 14px rgba(0,0,0,.14);transform:rotate(var(--r));animation:popin .55s backwards;transition:transform .2s,opacity .3s}
+.sh i{font-style:normal;font-size:34px}
+.sh:hover{transform:rotate(0) translateY(-4px)}
+.sh.used{opacity:.6}
+.sh.used::after{content:'♥';position:absolute;top:0;right:6px;color:var(--a)}
+.sh.tear{transform-origin:0 0;animation:tear .75s ease-in forwards}
+@keyframes popin{from{opacity:0;transform:translateY(24px) scale(.8) rotate(0)}}
+@keyframes tear{0%{transform:rotate(var(--r))}35%{transform:rotate(-12deg) translateY(-4px) scale(1.04)}100%{transform:rotate(-34deg) translate(40px,-240px) scale(.9);opacity:0}}
+.back{display:block;background:none;box-shadow:none;color:var(--a);padding:4px 2px 0;font-size:15px}
+.nb #panel{margin:10px 0 0;padding:16px;border-radius:14px;background:repeating-linear-gradient(#fffdf5 0 27px,#ffd9e8 27px 28px);border-left:3px solid #ff9ec4;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.nb #panel.in{animation:pageIn .65s cubic-bezier(.2,1.2,.4,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(30px) rotate(-2.5deg) scale(.95)}}
+.dz{position:relative;width:220px;height:220px;margin:12px auto}
+.pt{position:absolute;left:50%;top:50%;width:48px;height:76px;margin:-76px 0 0 -24px;background:linear-gradient(#fff,#ffd1e3);border-radius:50% 50% 45% 45%/65% 65% 35% 35%;transform-origin:50% 100%;cursor:pointer;transition:transform .9s,opacity .9s;box-shadow:0 2px 8px rgba(255,77,141,.3)}
+.ct{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px;border-radius:50%;background:radial-gradient(#ffe066,#ffb703);box-shadow:0 0 14px #ffb703;z-index:2;pointer-events:none}
+.gifts{display:flex;gap:10px;justify-content:center}
+.gf{font-size:54px;background:none;box-shadow:none;padding:6px;transition:.4s}
+.menu{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.menu button{padding:10px 16px;font-size:15px;background:#fff;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+#panel{margin-top:14px}
+canvas{width:100%;max-width:340px;border-radius:20px;background:linear-gradient(#1c0b3a,#4a1a5e);display:block;margin:auto}
+.note{font-size:15px;opacity:.85;margin-top:8px}
+.opt{display:block;width:100%;margin:8px 0;background:#fff;color:var(--ink);font-size:16px;padding:12px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.opt:disabled{opacity:1;cursor:default}
+.kb{font-size:64px;background:none;box-shadow:none;padding:4px 20px;transition:transform .1s}
+.kb:active{transform:scale(.8)}
+.card{max-height:94vh;overflow:auto}
+</style>
+</head>
+<body>
+<div id="hearts"></div>
+<main><div class="card" id="card">
+ <div class="ask">
+  <div class="bear" id="bear">🧸</div>
+  <h1>Хочу тебе кое-что сказать…</h1>
+  <p id="msg">Ты очень много значишь для меня. Будешь со мной? 💕</p>
+  <div class="btns"><button id="yes">Да 💖</button><button id="no">Нет</button></div>
+ </div>
+ <div class="final">
+  <div class="bear">🥰</div>
+  <div class="big">Ура! Я знал(а)! 💖</div>
+  <span>Ты сделала этот день самым счастливым. Люблю тебя!</span>
+  <div class="reason" id="reason">Нажми на кнопку, чтобы узнать секрет 👇</div>
+  <button id="more">Почему я тебя люблю 💌</button>
+  <div class='menu'><button data-t='sky'>✨ Небо</button><button data-t='quiz'>🎯 Квиз</button><button data-t='kiss'>💋 Поцелуи</button><button data-t='daisy'>🌼 Ромашка</button><button data-t='night'>🌙 Ночь</button><button data-t='assemble'>💗 Сердце</button><button data-t='game'>🧺 Ловим</button><button data-t='plane'>✈️ Самолётик</button><button data-t='gift'>🎁 Подарок</button></div>
+  <div id='panel'></div>
+ </div>
+</div></main>
+<script>
+const EM=["💖","💕","💗","💘","💝","✨","🌸","💓"];
+const box=document.getElementById("hearts");
+function heart(x,burst){
+  const e=document.createElement("div");e.className="h";e.textContent=EM[Math.random()*EM.length|0];
+  const s=burst?18+Math.random()*30:14+Math.random()*34;
+  e.style.cssText=`left:${x??Math.random()*100}${x==null?"vw":"px"};font-size:${s}px;--dx:${(Math.random()-.5)*160}px;--r:${(Math.random()-.5)*80}deg;animation-duration:${burst?2+Math.random()*2:7+Math.random()*8}s`;
+  if(burst)e.style.bottom=(Math.random()*30)+"vh";
+  box.appendChild(e);e.addEventListener("animationend",()=>e.remove());
+}
+setInterval(()=>heart(),350);
+for(let i=0;i<10;i++)setTimeout(()=>heart(),i*120);
+
+const yes=document.getElementById("yes"),no=document.getElementById("no"),msg=document.getElementById("msg"),bear=document.getElementById("bear");
+const lines=["Эй, ты промахнулась? Попробуй ещё 😏","Кнопка «Нет» сломалась 🙈","Ну пожалуйста? 🥺","Мишка уже плачет 😢","Даже кнопка не хочет, чтобы ты отказывалась 💘","Ладно, просто нажми «Да» 💞"];
+const faces=["🥺","😢","😭","🥹","💔","🧸"];
+let n=0;
+function dodge(e){
+  if(e)e.preventDefault();
+  if(no.parentNode!==document.body)document.body.appendChild(no);
+  n++;
+  no.style.position="fixed";
+  const w=no.offsetWidth,h=no.offsetHeight,m=16;
+  const vw=document.documentElement.clientWidth,vh=document.documentElement.clientHeight;
+  const maxX=Math.max(m,vw-w-m),maxY=Math.max(m,vh-h-m);
+  no.style.left=Math.min(maxX,Math.max(m,m+Math.random()*(maxX-m)))+"px";
+  no.style.top=Math.min(maxY,Math.max(m,m+Math.random()*(maxY-m)))+"px";
+  no.style.zIndex=5;
+  msg.textContent=lines[Math.min(n-1,lines.length-1)];
+  bear.textContent=faces[Math.min(n-1,faces.length-1)];
+  yes.style.transform=`scale(${Math.min(1+n*.12,2)})`;
+  yes.style.margin=`${Math.min(n*4,20)}px`;
+  no.style.transform=`scale(${Math.max(1-n*.05,.6)})`;
+}
+no.addEventListener("pointerdown",dodge);
+no.addEventListener("click",e=>e.preventDefault());
+addEventListener("resize",()=>{if(no.style.position!=="fixed")return;
+  const m=16,r=no.getBoundingClientRect(),vw=document.documentElement.clientWidth,vh=document.documentElement.clientHeight;
+  no.style.left=Math.max(m,Math.min(r.left,vw-r.width-m))+"px";
+  no.style.top=Math.max(m,Math.min(r.top,vh-r.height-m))+"px";});
+yes.addEventListener("click",()=>{
+  document.getElementById("card").classList.add("done");
+  no.style.display="none";
+  for(let i=0;i<70;i++)setTimeout(()=>heart(Math.random()*innerWidth,true),i*30);
+  setInterval(()=>heart(Math.random()*innerWidth,true),180);
+});
+const reasons=["Ты умеешь рассмешить меня даже в самый паршивый день 😄","Рядом с тобой мне спокойно и тепло 🏡","У тебя самая красивая улыбка на свете 😊","Ты настоящая — и это бесценно ✨","Мне хочется делиться с тобой всем подряд 🍫","Ты поддерживаешь меня, когда я сомневаюсь 🤍","С тобой любое место становится любимым 🌍","Ты делаешь обычные дни особенными 🌈","Я просто люблю, как ты смеёшься 💞","Ты — моё любимое «мы» 💖"];
+reasons.push(
+"Ты замечаешь мелочи, которые другие пропускают. Как я расстроен(а), как мне нужен чай или просто обнимашки. Рядом с тобой я чувствую, что меня по-настоящему видят 🫶",
+"Помнишь нашу первую встречу? Я тогда волновался(ась) так, что забыл(а), что хотел(а) сказать. А ты просто улыбнулся(ась), и всё стало легко. С тех пор я ловлю себя на мысли, что хочу видеть эту улыбку каждый день 😊",
+"Ты умеешь превратить любую ерунду в приключение. Поход в магазин, дождь, пробки: с тобой всё это становится историей, которую потом приятно вспоминать 🌧️",
+"Мне нравится, как ты говоришь о том, что тебе дорого. Глаза загораются, и хочется слушать часами. Я люблю тебя за этот огонёк 🔥",
+"С тобой можно молчать, и это не неловко. Просто сидеть рядом, и уже хорошо 🌙",
+"Ты делаешь меня лучше. Не требуя этого, просто показывая пример: как быть добрее, смелее и честнее с собой. Я хочу расти рядом с тобой 🌱",
+"Даже когда мы спорим, я знаю, что ты на моей стороне. Это дорогого стоит, и я это ценю больше, чем умею сказать 🤝",
+"Ты пахнешь уютом, и твои объятия лечат лучше любых таблеток 🧸",
+"Я люблю ваши с тобой привычки: наши шутки, которые понимаем только мы, любимые места, песни, под которые мы вспоминаем друг друга. Из этих мелочей и складывается наше «мы», и оно у меня самое любимое 🎶",
+"Когда мне плохо, ты находишь слова, а когда слов нет, просто остаёшься рядом. Я не знаю, как тебя за это благодарить, поэтому просто люблю ❤️",
+"У тебя невероятное чувство юмора. Иногда я смеюсь над твоей шуткой через час после того, как ты её сказала 😂",
+"Ты никогда не заставляешь меня быть кем-то другим. Рядом с тобой я могу быть собой: смешным(ой), неидеальным(ой), настоящим(ей). И это, пожалуй, самое большое счастье 🌸",
+"Я представляю будущее, и ты в каждой картинке: утро в выходной, путешествия, вечера на кухне. И каждая такая картинка делает меня счастливее ✈️",
+"Просто потому, что это ты. Без списков, причин и объяснений 💘"
+);
+let pool=[],typing;
+function type(el,t){clearInterval(typing);el.textContent="";let i=0;typing=setInterval(()=>{el.textContent+=t[i++];if(i>=t.length)clearInterval(typing)},22)}
+document.getElementById("more").addEventListener("click",e=>{
+  if(!pool.length)pool=reasons.slice().sort(()=>Math.random()-.5);
+  type(document.getElementById("reason"),pool.pop());
+  const r=e.target.getBoundingClientRect();
+  for(let i=0;i<8;i++)heart(r.left+Math.random()*r.width,true);
+  e.target.textContent="Ещё одна причина 💕";
+});
+const panel=document.getElementById('panel');
+document.querySelectorAll('.menu button').forEach(b=>b.onclick=()=>{window[b.dataset.t]();panel.scrollIntoView({behavior:'smooth',block:'nearest'})});
+function sky(){
+  panel.innerHTML=`<canvas id='cv' width='640' height='440'></canvas><div class='note' id='sn'>Нажимай на небо и зажигай звёзды по порядку ✨</div>`;
+  const c=document.getElementById('cv'),x=c.getContext('2d'),sn=document.getElementById('sn');
+  const bg=Array.from({length:70},()=>[Math.random()*640,Math.random()*440,Math.random()*1.6+.4,Math.random()*6]);
+  const P=[];for(let i=0;i<16;i++){const t=i/16*Math.PI*2;P.push([320+176*Math.pow(Math.sin(t),3),215-11*(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))]);}
+  let k=0,f=0;
+  (function d(){if(!c.isConnected)return;f++;x.clearRect(0,0,640,440);
+    bg.forEach(s=>{x.globalAlpha=.3+.7*Math.abs(Math.sin(f/40+s[3]));x.fillStyle='#fff';x.beginPath();x.arc(s[0],s[1],s[2],0,7);x.fill()});
+    x.globalAlpha=1;
+    if(k>1){x.strokeStyle='rgba(255,143,184,.9)';x.lineWidth=2.5;x.beginPath();x.moveTo(P[0][0],P[0][1]);for(let i=1;i<k;i++)x.lineTo(P[i][0],P[i][1]);if(k==16)x.closePath();x.stroke()}
+    P.forEach((p,i)=>{const on=i<k;x.fillStyle=on?'#ffd1e3':'rgba(255,255,255,.28)';x.shadowColor='#ff4d8d';x.shadowBlur=on?20:0;x.beginPath();x.arc(p[0],p[1],on?8+Math.sin(f/15)*1.5:5,0,7);x.fill()});
+    x.shadowBlur=0;requestAnimationFrame(d)})();
+  c.onclick=()=>{if(k<16){k++;if(k==16){sn.textContent='Это наше созвездие 💫 Каждая звезда — мысль о тебе';for(let i=0;i<20;i++)setTimeout(()=>heart(Math.random()*innerWidth,true),i*60)}}};
+}
+const Q=[['Что я люблю больше всего на свете?',['Пиццу 🍕','Спать 😴','Тебя 💖'],2],['Когда я понял(а), что ты особенная?',['С первой улыбки','С первой шутки','Всё сразу 😍'],2],['Сколько раз в день я о тебе думаю?',['Раз пять','Раз сто','Постоянно 😄'],2],['Что я хочу сказать тебе прямо сейчас?',['Спасибо','Обними меня','Люблю тебя'],2]];
+function quiz(){let i=0,s=0;const show=()=>{
+  if(i>=Q.length){const m=s==Q.length?'Ты знаешь меня идеально! 🥰':s>=2?'Почти идеально! Нам есть что узнать друг о друге 💕':'Значит, будем узнавать друг друга ещё лучше 😘';
+    panel.innerHTML=`<div class='reason'>${m}<br>Результат: ${s}/${Q.length}</div>`;for(let k=0;k<12;k++)setTimeout(()=>heart(Math.random()*innerWidth,true),k*70);return}
+  const q=Q[i];panel.innerHTML=`<div class='reason'>${q[0]}</div>`+q[1].map((t,j)=>`<button class='opt' data-j='${j}'>${t}</button>`).join('');
+  panel.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const ok=+b.dataset.j==q[2];if(ok)s++;b.textContent=ok?'✔ Верно! 💖':'✖ Почти 😏';panel.querySelectorAll('.opt').forEach(o=>o.disabled=true);setTimeout(()=>{i++;show()},900)})};show()}
+function kiss(){let n=0;
+  panel.innerHTML=`<div class='reason' id='km'>Тапай по поцелую 💋</div><button class='kb' id='kb'>💋</button><div class='note' id='kc'>0 💋</div>`;
+  const M={1:'Первый поцелуй! 😘',10:'10! Я таю 🫠',25:'25 поцелуев, ты не останавливаешься 😍',50:'50! Ты — мой любимый человек на свете 💞',100:'100 поцелуев! Щёки горят, а сердце твоё навсегда ❤️'};
+  document.getElementById('kb').onclick=e=>{n++;document.getElementById('kc').textContent=n+' 💋';if(M[n])document.getElementById('km').textContent=M[n];
+    const r=e.currentTarget.getBoundingClientRect();for(let i=0;i<4;i++)heart(r.left+Math.random()*r.width,true)};
+}
+EM.push('🦋','🎀','🌷');
+function daisy(){const N=7,M=['Любит 💖','Не любит 🙈','Любит 💕','Не любит 😢','Любит 💗','Не любит 🥺'];let k=0;
+  panel.innerHTML=`<div class='reason' id='dm'>Загадай и обрывай лепестки 🌼</div><div class='dz' id='dz'><div class='ct'></div></div>`;
+  const z=document.getElementById('dz'),m=document.getElementById('dm');
+  for(let i=0;i<N;i++){const p=document.createElement('div'),a=i*360/N;p.className='pt';p.style.transform=`rotate(${a}deg)`;
+    p.onclick=()=>{if(p.dataset.d)return;p.dataset.d=1;p.style.transform=`rotate(${a}deg) translateY(-280px)`;p.style.opacity=0;m.textContent=k<N-1?M[k]:'Любит! Конечно любит 💖💖💖';if(++k==N)for(let j=0;j<16;j++)setTimeout(()=>heart(Math.random()*innerWidth,true),j*70)};z.appendChild(p)}}
+function night(){
+  panel.innerHTML=`<canvas id='cv' width='640' height='440'></canvas><div class='note' id='nn'>Тапни на небо и загадай желание 🌠</div>`;
+  const c=document.getElementById('cv'),x=c.getContext('2d'),nn=document.getElementById('nn');
+  const st=Array.from({length:60},()=>[Math.random()*640,Math.random()*440,Math.random()*1.6+.4,Math.random()*6]);let sh=[],f=0;
+  const W=['Загадано! Хочу быть рядом с тобой всегда 🌙','Загадано! Хочу больше наших вечеров ✨','Загадано! Хочу, чтобы ты улыбалась каждый день 💖','Загадано! Хочу столько счастья, сколько звёзд на небе 💫'];
+  c.onclick=()=>{sh.push({x:640,y:10+Math.random()*120,l:70});nn.textContent=W[Math.random()*W.length|0]};
+  (function d(){if(!c.isConnected)return;f++;x.globalCompositeOperation='source-over';x.clearRect(0,0,640,440);
+    x.fillStyle='#fff3c4';x.shadowColor='#ffe9a0';x.shadowBlur=40;x.beginPath();x.arc(150,120,56,0,7);x.fill();x.shadowBlur=0;
+    x.globalCompositeOperation='destination-out';x.beginPath();x.arc(178,106,50,0,7);x.fill();x.globalCompositeOperation='source-over';
+    st.forEach(s=>{x.globalAlpha=.3+.7*Math.abs(Math.sin(f/40+s[3]));x.fillStyle='#fff';x.beginPath();x.arc(s[0],s[1],s[2],0,7);x.fill()});x.globalAlpha=1;
+    x.strokeStyle='#fff';x.lineWidth=3;x.lineCap='round';sh.forEach(s=>{s.x-=9;s.y+=4.5;s.l--;x.globalAlpha=s.l/70;x.beginPath();x.moveTo(s.x,s.y);x.lineTo(s.x+50,s.y-25);x.stroke()});x.globalAlpha=1;sh=sh.filter(s=>s.l>0);
+    requestAnimationFrame(d)})();
+}
+function assemble(){
+  panel.innerHTML=`<canvas id='cv' width='640' height='440'></canvas><div class='note'>Тапни, чтобы собрать сердце заново 💗</div>`;
+  const c=document.getElementById('cv'),x=c.getContext('2d'),n=60,T=[];
+  for(let i=0;i<n;i++){const t=i/n*Math.PI*2;T.push([320+176*Math.pow(Math.sin(t),3),215-11*(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))])}
+  let S,k,f=0;const go=()=>{S=T.map(()=>[Math.random()*640,Math.random()*440]);k=0};go();c.onclick=go;
+  (function d(){if(!c.isConnected)return;f++;x.clearRect(0,0,640,440);k=Math.min(1,k+.012);const e=1-Math.pow(1-k,3);
+    T.forEach((p,i)=>{x.fillStyle=i%2?'#ff8fb8':'#ff4d8d';x.beginPath();x.arc(S[i][0]+(p[0]-S[i][0])*e,S[i][1]+(p[1]-S[i][1])*e,9+Math.sin(f/12+i)*1.5,0,7);x.fill()});
+    x.globalAlpha=e*e;x.fillStyle='#fff';x.font='bold 40px sans-serif';x.textAlign='center';x.fillText('Ты + Я = ❤',320,230);x.globalAlpha=1;requestAnimationFrame(d)})();
+}
+function game(){
+  panel.innerHTML=`<canvas id='cv' width='640' height='440'></canvas><div class='note' id='gn'>Води пальцем и лови сердечки 🧺</div>`;
+  const c=document.getElementById('cv'),x=c.getContext('2d'),gn=document.getElementById('gn');
+  let px=320,sc=0,f=0,H=[];c.style.touchAction='none';
+  c.onpointermove=c.onpointerdown=e=>{const r=c.getBoundingClientRect();px=(e.clientX-r.left)/r.width*640};
+  const T={5:'Ты ловишь сердечки лучше всех 💕',10:'Мою душу ты поймала давно 💘',15:'Ты самое дорогое, что у меня есть 💖',20:'Люблю тебя до луны и обратно 🌙'};
+  (function d(){if(!c.isConnected)return;f++;x.clearRect(0,0,640,440);if(f%28==0)H.push({x:30+Math.random()*580,y:-20,v:3+Math.random()*3});
+    x.textAlign='center';x.font='36px serif';H.forEach(h=>{h.y+=h.v;x.fillText('💖',h.x,h.y)});x.font='58px serif';x.fillText('🧺',px,425);
+    H=H.filter(h=>{if(h.y>370&&h.y<430&&Math.abs(h.x-px)<50){sc++;gn.textContent=T[sc]||('Счёт: '+sc+' 💗');if(T[sc])for(let i=0;i<8;i++)heart(Math.random()*innerWidth,true);return false}return h.y<470});
+    requestAnimationFrame(d)})();
+}
+function plane(){
+  panel.innerHTML=`<button class='opt' id='pb'>Запустить самолётик ✈️</button><div class='reason' id='pm' style='display:none'></div>`;
+  document.getElementById('pb').onclick=e=>{const b=e.currentTarget;b.disabled=true;const p=document.createElement('div');p.textContent='✈️';
+    p.style.cssText='position:fixed;left:0;top:0;font-size:46px;z-index:9;pointer-events:none';document.body.appendChild(p);const W=innerWidth,H=innerHeight;
+    p.animate([{transform:`translate(-80px,${H*.75}px) rotate(-20deg)`},{transform:`translate(${W*.5}px,${H*.2}px) rotate(10deg)`},{transform:`translate(${W+80}px,${H*.45}px) rotate(-10deg)`}],{duration:3200,easing:'ease-in-out'}).onfinish=()=>{
+      p.remove();const m=document.getElementById('pm');m.style.display='flex';type(m,'Записка долетела ✈️ Люблю тебя больше, чем облака и звёзды вместе 💌');
+      for(let i=0;i<10;i++)setTimeout(()=>heart(Math.random()*innerWidth,true),i*60);b.disabled=false;b.textContent='Ещё раз ✈️'}}
+}
+function gift(){const G=['Ужин при свечах 🕯️','Вечер кино с попкорном 🍿','Прогулка и мороженое 🍦'];
+  panel.innerHTML=`<div class='reason' id='gm'>Выбери подарок 🎁</div><div class='gifts'>${G.map((g,i)=>`<button class='gf' data-i='${i}'>🎁</button>`).join('')}</div>`;
+  panel.querySelectorAll('.gf').forEach(b=>b.onclick=()=>{panel.querySelectorAll('.gf').forEach(o=>{o.disabled=true;if(o!==b)o.style.opacity=.25});b.textContent='💌';
+    type(document.getElementById('gm'),'Твоё свидание: '+G[b.dataset.i]+' 💖');for(let i=0;i<10;i++)setTimeout(()=>heart(Math.random()*innerWidth,true),i*60)})}
+const NB=[['daisy','🌼','Ромашка','#fff1a8'],['night','🌙','Ночь','#d9d4ff'],['assemble','💗','Сердце','#ffd1e3'],['game','🧺','Ловим','#c9f2dc'],['plane','✈️','Самолётик','#cfe8ff'],['gift','🎁','Подарок','#ffd9b8'],['sky','✨','Небо','#e3d1ff'],['quiz','🎯','Квиз','#ffe0ec'],['kiss','💋','Поцелуи','#ffc9d9'],['reasonsx','💌','Причины','#fff1a8']];
+function reasonsx(){panel.innerHTML=`<div class='reason' id='rx'>Нажми, чтобы узнать 👇</div><button class='opt' id='rb'>Почему я тебя люблю 💌</button>`;
+  document.getElementById('rb').onclick=e=>{const t=e.currentTarget;if(!pool.length)pool=reasons.slice().sort(()=>Math.random()-.5);type(document.getElementById('rx'),pool.pop());
+    const r=t.getBoundingClientRect();for(let i=0;i<8;i++)heart(r.left+Math.random()*r.width,true);t.textContent='Ещё одна причина 💕'}}
+const nb=document.createElement('div');nb.className='nb';nb.hidden=true;
+nb.innerHTML=`<div class='nt'>📓 Блокнот сюрпризов</div><div class='grid'></div><button class='back' hidden>← К блокноту</button>`;
+const grid=nb.querySelector('.grid'),back=nb.querySelector('.back');
+nb.appendChild(panel);panel.style.display='none';
+document.querySelector('main').appendChild(nb);
+let busy=false;
+NB.forEach((s,i)=>{const b=document.createElement('button');b.className='sh';
+  b.style.cssText=`--c:${s[3]};--r:${(i%3-1)*2.5+(i%2?1.5:-1.5)}deg;animation-delay:${i*70}ms`;
+  b.innerHTML=`<i>${s[1]}</i><span>${s[2]}</span>`;
+  b.onclick=()=>{if(busy)return;busy=true;b.classList.add('tear');
+    setTimeout(()=>{grid.style.display='none';back.hidden=false;panel.style.display='block';window[s[0]]();
+      panel.classList.remove('in');void panel.offsetWidth;panel.classList.add('in');
+      b.classList.add('used');busy=false;nb.scrollIntoView({behavior:'smooth',block:'start'})},750)};
+  grid.appendChild(b)});
+back.onclick=()=>{panel.style.display='none';panel.innerHTML='';back.hidden=true;grid.style.display='grid';
+  grid.querySelectorAll('.sh').forEach((b,i)=>{b.classList.remove('tear');b.style.animation='none';void b.offsetWidth;b.style.animation='';b.style.animationDelay=i*60+'ms'})};
+const card=document.getElementById('card'),mn=document.querySelector('main');
+const op=document.createElement('button');op.id='open';op.textContent='📓 Открыть блокнот сюрпризов';
+document.querySelector('.final').appendChild(op);
+const hm=document.createElement('button');hm.className='hm';hm.textContent='← Назад';nb.insertBefore(hm,nb.firstChild);
+op.onclick=()=>{card.style.display='none';mn.classList.add('done');nb.hidden=false;mn.scrollTop=0};
+hm.onclick=()=>{nb.hidden=true;mn.classList.remove('done');card.style.display='';back.onclick()};
+</script>
+</body>
+</html>
